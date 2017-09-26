@@ -1,0 +1,27 @@
+language: node_js
+
+install:
+   - npm install
+
+script: echo OK
+
+deploy:
+  provider: lambda
+  access_key_id: $AWS_ACCESS_KEY_ID
+  secret_access_key: $AWS_SECRET_ACCESS_KEY
+  function_name: tokenValidatorFirebase_demo
+  region: us-east-1
+  handler_name: handler
+  runtime: nodejs6.10
+  publish: true 
+  #zip: index.js
+  zip: deploy.zip
+  role: arn:aws:iam::287173911746:role/lambda_basic_execution
+  on:
+    all_branches: true
+
+before_deploy:
+   - zip -r deploy.zip index.js package.json node_modules/
+
+after_deploy:
+   - unzip -l deploy.zip 
