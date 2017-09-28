@@ -1,7 +1,7 @@
 var admin = require("firebase-admin");
 
 exports.handler =  (event, context, callback) => {
-    var rawToken = event.authorizationToken;
+    var rawToken = event.authorizationToken || (headers && headers['Authorization']);
     var token = event.authorizationToken && event.authorizationToken.replace('Bearer ',''); 
 
     verifyFirebaseToken(token)
